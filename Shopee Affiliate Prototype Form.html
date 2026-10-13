@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Shopee Affiliate Prototype Form</title>
+    <style>
+      :root {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        color: #17253b;
+        background: #f3f6fb;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .shell {
+        max-width: 1050px;
+        margin: auto;
+        padding: 40px 20px 70px;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+      .brand {
+        font-weight: 800;
+        letter-spacing: -0.6px;
+        font-size: 18px;
+      }
+      .brand em {
+        color: #ee5a35;
+        font-style: normal;
+      }
+      .tag {
+        background: #eaf0ff;
+        color: #4465ba;
+        padding: 8px 13px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .hero {
+        margin: 22px 0 29px;
+      }
+      .hero h1 {
+        font-size: clamp(25px, 4vw, 37px);
+        letter-spacing: -1px;
+        margin: 0 0 8px;
+      }
+      .hero p {
+        color: #67768b;
+        margin: 0;
+        line-height: 1.6;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      .panel,
+      .side {
+        background: white;
+        border: 1px solid #e2e9f2;
+        border-radius: 20px;
+        box-shadow: 0 12px 28px #253c5b0c;
+      }
+      .section {
+        padding: 27px 28px;
+        border-bottom: 1px solid #e8edf5;
+      }
+      .section:last-child {
+        border-bottom: 0;
+      }
+      .sectiontitle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 21px;
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .num {
+        width: 31px;
+        height: 31px;
+        display: grid;
+        place-items: center;
+        background: #fcece5;
+        color: #e65c34;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 16px;
+        min-width: 0;
+      }
+      .grid .field {
+        margin: 0;
+      }
+      .field label {
+        font-weight: 650;
+        font-size: 13px;
+      }
+      .field label small {
+        font-weight: 400;
+        color: #8a98a8;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        background: #fff;
+        border: 1px solid #dbe3ee;
+        border-radius: 10px;
+        min-height: 44px;
+        padding: 11px 12px;
+        color: #17253b;
+        outline: none;
+      }
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: #f27757;
+        box-shadow: 0 0 0 3px #fae1d9;
+      }
+      .field select:disabled,
+      .field input:disabled {
+        background: #f4f6f9;
+        color: #8b99a8;
+      }
+      .options {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .choice {
+        padding: 11px 14px;
+        border: 1px solid #dce4ed;
+        border-radius: 10px;
+        font-size: 14px;
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        cursor: pointer;
+      }
+      .choice:has(input:checked) {
+        background: #fff5f0;
+        border-color: #ed805f;
+      }
+      .choice input {
+        accent-color: #e65c34;
+      }
+      .muted {
+        font-size: 12px;
+        color: #738196;
+        line-height: 1.5;
+      }
+      .hint {
+        color: #256d4f;
+        font-size: 12px;
+        min-height: 17px;
+        margin-top: 7px;
+      }
+      .hint.bad {
+        color: #b94242;
+      }
+      .upload {
+        display: grid;
+        justify-items: center;
+        gap: 7px;
+        padding: 24px;
+        border: 1.5px dashed #b6c5d8;
+        border-radius: 14px;
+        background: #f9fbfe;
+        cursor: pointer;
+        text-align: center;
+      }
+      .upload strong {
+        font-size: 13px;
+      }
+      .upload input {
+        display: none;
+      }
+      .upload img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 9px;
+      }
+      .upload .symbol {
+        font-size: 26px;
+        color: #ef6541;
+      }
+      .side {
+        position: sticky;
+        top: 20px;
+        padding: 24px;
+      }
+      .side h2 {
+        font-size: 16px;
+        margin: 0 0 7px;
+      }
+      .side p {
+        color: #77869b;
+        font-size: 12px;
+        line-height: 1.65;
+      }
+      .side hr {
+        border: 0;
+        border-top: 1px solid #ebeff5;
+        margin: 18px 0;
+      }
+      .preview {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: 13px;
+        line-height: 1.75;
+        color: #3d4e66;
+        min-height: 90px;
+      }
+      .pill {
+        background: #eef7f1;
+        color: #297150;
+        border-radius: 20px;
+        padding: 5px 9px;
+        display: inline-block;
+        font-size: 11px;
+      }
+      .btn {
+        width: 100%;
+        border: 0;
+        color: white;
+        background: #ef613b;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 750;
+      }
+      .btn:hover {
+        background: #d64e2b;
+      }
+      .secondary {
+        background: #edf1f6;
+        color: #2d4058;
+        margin-top: 9px;
+      }
+      .secondary:hover {
+        background: #dbe4ee;
+      }
+      .foot {
+        font-size: 11px;
+        color: #8290a2;
+        text-align: center;
+        margin: 20px auto;
+      }
+      .hidden {
+        display: none !important;
+      }
+      #validation {
+        font-size: 12px;
+        white-space: pre-line;
+        margin-top: 12px;
+        line-height: 1.65;
+      }
+      .error {
+        color: #bf4a48;
+      }
+      .ok {
+        color: #197750;
+      }
+      .note {
+        font-size: 12px;
+        background: #f7f9fd;
+        padding: 11px;
+        border-radius: 10px;
+        color: #637387;
+        line-height: 1.5;
+      }
+      .loading {
+        color: #bd693b;
+      }
+      @media (max-width: 800px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          position: static;
+        }
+        .shell {
+          padding: 20px 14px 40px;
+        }
+        .section {
+          padding: 20px;
+        }
+        .hero {
+          margin-top: 15px;
+        }
+      }
+      @media (max-width: 480px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .tag {
+          font-size: 10px;
+        }
+        .hero h1 {
+          font-size: 27px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="top">
+        <div class="brand"><em>●</em> Shopee Affiliate Prototype Form</div>
+        <span class="tag">กรอกข้อมูลออนไลน์</span>
+      </div>
+      <div class="hero">
+        <h1>ลงทะเบียนรับค่าคอมมิชชัน</h1>
+        <p>กรอกข้อมูลเท่าที่จำเป็น และให้ระบบช่วยจัดการส่วนที่เหลือ</p>
+      </div>
+      <div class="layout">
+        <form id="frm" class="panel" novalidate>
+          <section class="section">
+            <div class="sectiontitle">
+              <span class="num">01</span> ข้อมูลผู้สมัคร
+            </div>
+            <div class="field">
+              <label>ประเภทบัญชี</label>
+              <div class="options">
+                <label class="choice"
+                  ><input type="radio" name="kind" value="personal" checked />
+                  บุคคลธรรมดา</label
+                ><label class="choice"
+                  ><input type="radio" name="kind" value="company" />
+                  นิติบุคคล</label
+                >
+              </div>
+            </div>
+            <div id="personal">
+              <div class="field">
+                <label for="title">คำนำหน้า</label
+                ><select id="title">
+                  <option>นาย</option>
+                  <option>นาง</option>
+                  <option>นางสาว</option>
+                  <option>อื่น ๆ</option>
+                </select>
+              </div>
+              <div class="grid">
+                <div class="field">
+                  <label>ชื่อจริง</label
+                  ><input
+                    id="fname"
+                    autocomplete="given-name"
+                    placeholder="ชื่อจริง"
+                  />
+                </div>
+                <div class="field">
+                  <label>นามสกุล</label
+                  ><input
+                    id="lname"
+                    autocomplete="family-name"
+                    placeholder="นามสกุล"
+                  />
+                </div>
+              </div>
+            </div>
+            <div id="company" class="hidden">
+              <div class="field">
+                <label>ชื่อนิติบุคคล</label
+                ><input
+                  id="companyname"
+                  placeholder="ชื่อบริษัท / ห้างหุ้นส่วน"
+                />
+              </div>
+              <div class="field">
+                <label>เลขทะเบียนนิติบุคคล</label
+                ><input
+                  id="companyid"
+                  inputmode="numeric"
+                  maxlength="13"
+                  placeholder="เลขทะเบียน 13 หลัก"
+                />
+              </div>
+            </div>
+            <div class="field" style="margin-top: 16px">
+              <label>หมายเลขโทรศัพท์</label
+              ><input
+                id="phone"
+                inputmode="tel"
+                maxlength="10"
+                placeholder="0XXXXXXXXX"
+                autocomplete="tel"
+              />
+            </div>
+          </section>
+          <section class="section">
+            <div class="sectiontitle"><span class="num">02</span> ที่อยู่</div>
+            <div class="field">
+              <label>รหัสไปรษณีย์</label
+              ><input
+                id="zip"
+                inputmode="numeric"
+                maxlength="5"
+                placeholder="รหัสไปรษณีย์ 5 หลัก"
+              />
+              <div class="hint" id="zipstatus" aria-live="polite"></div>
+            </div>
+            <div class="grid">
+              <div class="field">
+                <label>จังหวัด</label
+                ><select id="province" disabled>
+                  <option value="">เลือกจังหวัด</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>อำเภอ / เขต</label
+                ><select id="district" disabled>
+                  <option value="">เลือกอำเภอ / เขต</option>
+                </select>
+              </div>
+            </div>
+            <div class="field" style="margin-top: 16px">
+              <label>ตำบล / แขวง</label
+              ><select id="subdistrict" disabled>
+                <option value="">เลือกตำบล / แขวง</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>ชื่อหมู่บ้าน <small>(ถ้ามี)</small></label
+              ><input
+                id="village"
+                placeholder="ชื่อหมู่บ้าน / หมู่บ้านจัดสรร"
+                autocomplete="off"
+              />
+              <div class="muted">
+                กรอกชื่อหมู่บ้านหรือที่อยู่โครงการได้ตามจริง
+              </div>
+            </div>
+            <div class="grid">
+              <div class="field">
+                <label>บ้านเลขที่</label
+                ><input id="house" placeholder="เช่น 123/45" />
+              </div>
+              <div class="field">
+                <label>หมู่ที่ <small>(ถ้ามี)</small></label
+                ><input id="moo" inputmode="numeric" placeholder="เช่น 5" />
+              </div>
+            </div>
+            <div class="field" style="margin-top: 16px">
+              <label>ถนน / ซอย / อาคาร <small>(ถ้ามี)</small></label
+              ><input id="addressExtra" placeholder="รายละเอียดเพิ่มเติม" />
+            </div>
+          </section>
+          <section class="section">
+            <div class="sectiontitle">
+              <span class="num">03</span> บัญชีรับเงิน
+            </div>
+            <div class="field">
+              <label>ธนาคาร</label
+              ><select id="bank">
+                <option value="">เลือกธนาคาร</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>หมายเลขบัญชี</label
+              ><input
+                id="banknumber"
+                inputmode="numeric"
+                placeholder="หมายเลขบัญชีธนาคาร"
+              />
+              <div class="muted">
+                ระบบตรวจรูปแบบเบื้องต้น
+                ไม่สามารถยืนยันเจ้าของบัญชีหรือสาขาจากหมายเลขเพียงอย่างเดียว
+              </div>
+            </div>
+            <div class="field">
+              <label>ชื่อเจ้าของบัญชี</label
+              ><label id="applicantNameChoice" class="choice"
+                ><input id="useApplicantName" type="checkbox" />
+                ใช้ชื่อ-นามสกุลจากข้อมูลผู้สมัคร</label
+              ><input id="owner" placeholder="ชื่อตรงตามบัญชีธนาคาร" />
+              <div class="muted">
+                เลือกตัวเลือกนี้เพื่อกรอกชื่อจากด้านบนอัตโนมัติ
+                หรือพิมพ์แก้ไขชื่อเจ้าของบัญชีได้ตามต้องการ
+              </div>
+            </div>
+            <div class="field">
+              <label>ภาพหลักฐานบัญชีธนาคาร</label
+              ><label class="upload" for="proof"
+                ><input
+                  type="file"
+                  id="proof"
+                  accept="image/jpeg,image/png,image/webp" /><span
+                  id="fileicon"
+                  class="symbol"
+                  >⇧</span
+                ><strong id="filelabel">คลิกเพื่อเลือกภาพบัญชีธนาคาร</strong
+                ><span class="muted">JPG, PNG, WEBP (ไม่เกิน 5 MB)</span
+                ><img id="proofpreview" class="hidden" alt="ภาพหลักฐานที่เลือก"
+              /></label>
+            </div>
+          </section>
+        </form>
+        <aside class="side">
+          <h2>ตรวจสอบข้อมูล</h2>
+          <p>ตรวจดูความถูกต้องก่อนนำข้อมูลไปใช้งาน</p>
+          <span class="pill">จัดรูปแบบที่อยู่อัตโนมัติ</span>
+          <hr />
+          <strong style="font-size: 12px">ผู้สมัคร</strong>
+          <div class="preview" id="personpreview">—</div>
+          <strong style="font-size: 12px">ที่อยู่</strong>
+          <div class="preview" id="addresspreview">—</div>
+          <strong style="font-size: 12px">บัญชีธนาคาร</strong>
+          <div class="preview" id="bankpreview">—</div>
+          <button class="btn" id="check" type="button">ตรวจสอบข้อมูล</button
+          ><button class="btn secondary" id="copy" type="button">
+            คัดลอกที่อยู่
+          </button>
+          <div id="validation" aria-live="polite"></div>
+          <p class="note">
+            ข้อมูลอยู่ในเบราว์เซอร์ของคุณเท่านั้น
+            แบบฟอร์มนี้ไม่มีการส่งข้อมูลไปยังเซิร์ฟเวอร์
+          </p>
+        </aside>
+      </div>
+      <p class="foot">
+        Shopee Affiliate Prototype Form · UX/UI concept by บุญนำชัย
+      </p>
+    </main>
+    <script>
+      "use strict";
+      const $ = (id) => document.getElementById(id);
+      const banks = [
+        ["กรุงเทพ", "002"],
+        ["กสิกรไทย", "004"],
+        ["กรุงไทย", "006"],
+        ["ทหารไทยธนชาต (ttb)", "011"],
+        ["ไทยพาณิชย์", "014"],
+        ["ซีไอเอ็มบี ไทย", "022"],
+        ["ยูโอบี", "024"],
+        ["กรุงศรีอยุธยา", "025"],
+        ["แลนด์ แอนด์ เฮ้าส์", "073"],
+        ["เกียรตินาคินภัทร", "069"],
+        ["ทิสโก้", "067"],
+        ["ไทยเครดิต", "071"],
+        ["ไอซีบีซี (ไทย)", "070"],
+        ["ธนาคารแห่งประเทศจีน (ไทย)", "052"],
+        ["สแตนดาร์ดชาร์เตอร์ด (ไทย)", "020"],
+        ["ออมสิน", "030"],
+        ["เพื่อการเกษตรและสหกรณ์การเกษตร (ธ.ก.ส.)", "034"],
+        ["อาคารสงเคราะห์", "033"],
+        ["อิสลามแห่งประเทศไทย", "066"],
+      ];
+      for (const [name, code] of banks) {
+        const o = new Option(name, name);
+        o.dataset.bankCode = code;
+        $("bank").add(o);
+      }
+      let geography = [],
+        matches = [],
+        fileUrl = null;
+      function opts(el, list, placeholder) {
+        el.replaceChildren(new Option(placeholder, ""));
+        for (const s of list) el.add(new Option(s, s));
+        el.disabled = list.length === 0;
+      }
+      function uniq(xs) {
+        return [...new Set(xs)].sort((a, b) => a.localeCompare(b, "th"));
+      }
+      function renderZip() {
+        let z = $("zip").value.replace(/\D/g, "").slice(0, 5);
+        $("zip").value = z;
+        matches = geography.filter(
+          (r) => String(r.postalCode).padStart(5, "0") === z && z.length === 5,
+        );
+        opts(
+          $("province"),
+          uniq(matches.map((r) => r.provinceNameTh)),
+          "เลือกจังหวัด",
+        );
+        opts($("district"), [], "เลือกอำเภอ / เขต");
+        opts($("subdistrict"), [], "เลือกตำบล / แขวง");
+        if (matches.length) {
+          $("zipstatus").textContent =
+            `พบพื้นที่ ${matches.length} ตำบล / แขวง`;
+          $("zipstatus").className = "hint";
+          if ($("province").options.length === 2) {
+            $("province").selectedIndex = 1;
+            renderDistrict();
+          }
+        } else {
+          $("zipstatus").textContent =
+            z.length === 5
+              ? geography.length
+                ? "ไม่พบรหัสไปรษณีย์นี้"
+                : "ไม่สามารถโหลดฐานข้อมูลที่อยู่ได้"
+              : geography.length
+                ? "กรอกรหัสไปรษณีย์ 5 หลัก"
+                : "กำลังเชื่อมข้อมูลพื้นที่...";
+          $("zipstatus").className = "hint " + (z.length === 5 ? "bad" : "");
+        }
+      }
+      function renderDistrict() {
+        const p = $("province").value;
+        opts(
+          $("district"),
+          uniq(
+            matches
+              .filter((r) => r.provinceNameTh === p)
+              .map((r) => r.districtNameTh),
+          ),
+          "เลือกอำเภอ / เขต",
+        );
+        opts($("subdistrict"), [], "เลือกตำบล / แขวง");
+        if ($("district").options.length === 2) {
+          $("district").selectedIndex = 1;
+          renderSub();
+        }
+        refresh();
+      }
+      function renderSub() {
+        const p = $("province").value,
+          d = $("district").value;
+        opts(
+          $("subdistrict"),
+          uniq(
+            matches
+              .filter((r) => r.provinceNameTh === p && r.districtNameTh === d)
+              .map((r) => r.subdistrictNameTh),
+          ),
+          "เลือกตำบล / แขวง",
+        );
+        if ($("subdistrict").options.length === 2)
+          $("subdistrict").selectedIndex = 1;
+        refresh();
+      }
+      function currentAddress() {
+        let p = $("province").value,
+          d = $("district").value,
+          s = $("subdistrict").value;
+        let bkk = p === "กรุงเทพมหานคร";
+        return [
+          $("house").value.trim(),
+          $("moo").value.trim() ? "หมู่ " + $("moo").value.trim() : "",
+          $("village").value.trim(),
+          $("addressExtra").value.trim(),
+          s ? (bkk ? "แขวง" : "ตำบล") + s : "",
+          d ? (bkk ? "เขต" : "อำเภอ") + d : "",
+          p ? (bkk ? p : "จังหวัด" + p) : "",
+          $("zip").value.trim(),
+        ]
+          .filter(Boolean)
+          .join(" ");
+      }
+      function applicantName() {
+        return [
+          $("title").value,
+          $("fname").value.trim(),
+          $("lname").value.trim(),
+        ]
+          .filter(Boolean)
+          .join(" ");
+      }
+      function syncOwnerFromApplicant() {
+        if ($("useApplicantName").checked) $("owner").value = applicantName();
+        refresh();
+      }
+      function refresh() {
+        const kind = document.querySelector("input[name=kind]:checked").value;
+        let n =
+          kind === "personal"
+            ? [$("title").value, $("fname").value, $("lname").value]
+                .filter(Boolean)
+                .join(" ")
+            : $("companyname").value;
+        $("personpreview").textContent =
+          (n || "—") + ($("phone").value ? "\n" + $("phone").value : "");
+        $("addresspreview").textContent = currentAddress() || "—";
+        const bank = $("bank").value,
+          acc = $("banknumber").value.replace(/\D/g, "");
+        $("bankpreview").textContent =
+          (bank || "—") +
+          (acc ? "\n•••• " + acc.slice(-4) : "") +
+          ($("owner").value ? "\n" + $("owner").value : "");
+      }
+      async function loadGeo() {
+        const url =
+          "https://raw.githubusercontent.com/thailand-geography-data/thailand-geography-json/main/src/geography.json";
+        try {
+          const r = await fetch(url, { cache: "force-cache" });
+          if (!r.ok) throw Error("network");
+          const data = await r.json();
+          if (
+            !Array.isArray(data) ||
+            !data.some((x) => x.postalCode && x.subdistrictNameTh)
+          )
+            throw Error("schema");
+          geography = data;
+          renderZip();
+        } catch (e) {
+          $("zipstatus").textContent =
+            "โหลดฐานข้อมูลพื้นที่ไม่ได้ กรุณาเชื่อมอินเทอร์เน็ตแล้วเปิดหน้าเว็บอีกครั้ง";
+          $("zipstatus").className = "hint bad";
+        }
+      }
+      $("zip").addEventListener("input", () => {
+        renderZip();
+        refresh();
+      });
+      $("province").addEventListener("change", renderDistrict);
+      $("district").addEventListener("change", renderSub);
+      $("subdistrict").addEventListener("change", refresh);
+      for (const el of document.querySelectorAll("input,select")) {
+        el.addEventListener("input", refresh);
+        el.addEventListener("change", refresh);
+      }
+      for (const id of ["title", "fname", "lname"]) {
+        $(id).addEventListener("input", syncOwnerFromApplicant);
+        $(id).addEventListener("change", syncOwnerFromApplicant);
+      }
+      $("useApplicantName").addEventListener("change", syncOwnerFromApplicant);
+      $("owner").addEventListener("input", () => {
+        $("useApplicantName").checked = false;
+        refresh();
+      });
+      for (const e of document.querySelectorAll("[name=kind]"))
+        e.addEventListener("change", () => {
+          let co = e.value === "company" && e.checked;
+          $("company").classList.toggle("hidden", !co);
+          $("personal").classList.toggle("hidden", co);
+          $("applicantNameChoice").classList.toggle("hidden", co);
+          if (co) $("useApplicantName").checked = false;
+          refresh();
+        });
+      $("phone").addEventListener("input", () => {
+        $("phone").value = $("phone").value.replace(/\D/g, "").slice(0, 10);
+      });
+      $("banknumber").addEventListener("input", () => {
+        $("banknumber").value = $("banknumber").value.replace(/[^\d -]/g, "");
+      });
+      $("companyid").addEventListener("input", () => {
+        $("companyid").value = $("companyid").value.replace(/\D/g, "");
+      });
+      $("proof").addEventListener("change", () => {
+        const f = $("proof").files?.[0];
+        if (fileUrl) URL.revokeObjectURL(fileUrl);
+        fileUrl = null;
+        $("proofpreview").classList.add("hidden");
+        $("fileicon").classList.remove("hidden");
+        if (!f) {
+          $("filelabel").textContent = "คลิกเพื่อเลือกภาพบัญชีธนาคาร";
+          return;
+        }
+        if (
+          !["image/jpeg", "image/png", "image/webp"].includes(f.type) ||
+          f.size > 5 * 1024 * 1024
+        ) {
+          $("filelabel").textContent =
+            "กรุณาเลือกภาพ JPG, PNG หรือ WEBP ขนาดไม่เกิน 5 MB";
+          $("proof").value = "";
+          return;
+        }
+        fileUrl = URL.createObjectURL(f);
+        $("proofpreview").src = fileUrl;
+        $("proofpreview").classList.remove("hidden");
+        $("fileicon").classList.add("hidden");
+        $("filelabel").textContent = f.name;
+      });
+      $("check").addEventListener("click", () => {
+        const errors = [],
+          k = document.querySelector("input[name=kind]:checked").value;
+        let req = (id, msg) => {
+          if (!$(id).value.trim()) errors.push(msg);
+        };
+        if (k === "personal") {
+          req("fname", "กรุณากรอกชื่อจริง");
+          req("lname", "กรุณากรอกนามสกุล");
+        } else {
+          req("companyname", "กรุณากรอกชื่อนิติบุคคล");
+          if (!/^\d{13}$/.test($("companyid").value))
+            errors.push("กรุณาตรวจเลขทะเบียนนิติบุคคล 13 หลัก");
+        }
+        if (!/^0\d{9}$/.test($("phone").value))
+          errors.push("กรุณาตรวจหมายเลขโทรศัพท์ 10 หลัก");
+        if (
+          !/^\d{5}$/.test($("zip").value) ||
+          !$("subdistrict").value ||
+          !$("district").value ||
+          !$("province").value
+        )
+          errors.push("กรุณาเลือกจังหวัด อำเภอ และตำบลที่ตรงกับรหัสไปรษณีย์");
+        req("house", "กรุณากรอกบ้านเลขที่");
+        req("bank", "กรุณาเลือกธนาคาร");
+        const acc = $("banknumber").value.replace(/\D/g, "");
+        if (!/^\d{6,15}$/.test(acc))
+          errors.push(
+            "กรุณาตรวจเลขบัญชีธนาคาร (ตัวเลข 6–15 หลักสำหรับการตรวจเบื้องต้น)",
+          );
+        req("owner", "กรุณากรอกชื่อเจ้าของบัญชี");
+        if (!$("proof").files?.length)
+          errors.push("กรุณาแนบหลักฐานบัญชีธนาคาร");
+        $("validation").textContent = errors.length
+          ? errors.map((x) => "• " + x).join("\n")
+          : "✓ กรอกข้อมูลเบื้องต้นครบแล้ว โปรดตรวจสอบกับเอกสารต้นฉบับก่อนใช้งาน";
+        $("validation").className = errors.length ? "error" : "ok";
+      });
+      $("copy").addEventListener("click", async () => {
+        let a = currentAddress();
+        if (!a) return;
+        try {
+          await navigator.clipboard.writeText(a);
+          $("validation").textContent = "✓ คัดลอกที่อยู่แล้ว";
+          $("validation").className = "ok";
+        } catch (e) {
+          $("validation").textContent =
+            "ไม่สามารถคัดลอกอัตโนมัติได้บนเบราว์เซอร์นี้";
+          $("validation").className = "error";
+        }
+      });
+      refresh();
+      loadGeo();
+    </script>
+  </body>
+</html>
